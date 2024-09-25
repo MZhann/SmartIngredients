@@ -7,11 +7,11 @@ const Navbar = () => {
             <Link to='/'>
                 <img src={logo} alt="logo" width={100} height={100} />
             </Link>
-            <div className="hidden md:flex gap-4">
-                <Link to="/">Main Page</Link>
-                <Link to="/generate">Generate</Link>
+            <div className="flex gap-4">
+                <Link to="/" className="bg-emerald-400 rounded-3xl p-2">Main Page</Link>
+                <Link to="/generate" className="bg-emerald-400 rounded-3xl p-2">Generate</Link>
             </div>
-            <div className="md:hidden">burger button</div>
+            
         </div>
     );
 };

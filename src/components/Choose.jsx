@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Ingredient from "./Ingredient";
 import Options from "./Options";
+import loading from '../../public/loading.gif'
 
 const Choose = () => {
     
@@ -14,6 +15,10 @@ const Choose = () => {
     const [imageUrl, setImageUrl] = useState('');
 
     const [isLoading, setIsLoading] = useState(false);
+
+    const toggleLoading =()=>{
+        setIsLoading(!isLoading);
+    }
 
     const ingredientsData = [
         { name: "Meat", imageSrc: "/images/meat.png" },
@@ -74,6 +79,7 @@ const Choose = () => {
 
             // parseRecipe(text, imageURL);
             console.log('Gtp response text: ', responseText);
+            setIsLoading(false);
         } catch (error) {
             console.error(error.response?.data ?? error.toJSON?.() ?? error);
             console.error("API error", error);
@@ -83,6 +89,7 @@ const Choose = () => {
     };
 
     const generateImage = async (promtText) => {
+        toggleLoading();
         console.log('generate image')
         const options = {
             method: "POST",
@@ -133,13 +140,14 @@ const Choose = () => {
                 </div>
                 <button
                     onClick={() => generateImage(createPromptText())}
-                    className="px-4 h-[50px] m-4 rounded-2xl bg-indigo-400"
+                    className="px-4 h-[50px] m-4 rounded-2xl bg-indigo-200"
                 >
-                    Generate Dish
+                    {isLoading ? <img src={loading} width={50} height={50} className="" alt="loading" /> : 'Generate dish' }
+                    
                 </button>
             </div>
-            <div className="flex w-full">
-                <p className="text-green-400 text-xl">infoFromOptions: {infoFromOptions}</p>
+            <div className="flex w-full flex-col items-center xl:flex-row">
+                {/* <p className="text-green-400 text-xl">infoFromOptions: {infoFromOptions}</p> */}
                 <Options setInfoFromOptions={setInfoFromOptions} />
                 <div>
                     <p>Generated image will be here:</p>

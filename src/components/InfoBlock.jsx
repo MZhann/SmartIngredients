@@ -2,7 +2,7 @@ import dish from '../../public/images/dish.png'
 
 const InfoBlock = () => {
     return (
-        <div className="w-full flex flex-col lg:flex-row items-center justify-evenly bg-blue-700 h-96" >
+        <div className="w-full flex flex-col pt-[100px] lg:flex-row items-center justify-evenly bg-blue-700 min-h-[500px] pr-5 pl-5" >
             <div>
                 <h1 className="text-3xl font-bold">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, aspernatur.{" "}
@@ -17,7 +17,7 @@ const InfoBlock = () => {
                     beka
                 </button>
             </div>
-            <div><img src={dish} className='hidden sm:block' alt="" /></div>
+            <div><img src={dish} className='' alt="" /></div>
 
 
             <div></div>
