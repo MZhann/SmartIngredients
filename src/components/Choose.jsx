@@ -16,9 +16,7 @@ const Choose = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    const toggleLoading =()=>{
-        setIsLoading(!isLoading);
-    }
+    
 
     const ingredientsData = [
         { name: "Meat", imageSrc: "/images/meat.png" },
@@ -39,7 +37,6 @@ const Choose = () => {
 
     const generateText = async () => {
         
-        setIsLoading(true);
 
         const ingredientsString =
             "ingredients are: " + gptPromptText.map((obj) => obj.name).join(", ");
@@ -65,31 +62,18 @@ const Choose = () => {
             console.log(text);
             setResponseText(text);
 
-            // let promptTextForImage = extractImagePrompt(text);
-            // promptTextForImage = reduceImagePromptLength(promptTextForImage);
-            // console.log("GENERATION IMAGE PROMT: ");
-            // console.log(promptTextForImage);
-
-            // await generateImage(promptTextForImage);
-
-            // setTimeout(() => {
-            //     parseRecipe(text, imageURL);
-            //     console.log("Waited for 5 seconds!");
-            // }, 2000);
-
-            // parseRecipe(text, imageURL);
             console.log('Gtp response text: ', responseText);
+
             setIsLoading(false);
         } catch (error) {
             console.error(error.response?.data ?? error.toJSON?.() ?? error);
             console.error("API error", error);
         }
 
-        // postReceipt();
     };
 
     const generateImage = async (promtText) => {
-        toggleLoading();
+        setIsLoading(true);
         console.log('generate image')
         const options = {
             method: "POST",
@@ -114,7 +98,9 @@ const Choose = () => {
             setImageUrl(data.data[0].url);
             
             await generateText();
-
+            
+            
+            
         } catch (error) {
             console.error(error);
         }
@@ -141,13 +127,15 @@ const Choose = () => {
                 <button
                     onClick={() => generateImage(createPromptText())}
                     className="px-4 h-[50px] m-4 rounded-2xl bg-indigo-200"
+                    disabled = {isLoading}
                 >
-                    {isLoading ? <img src={loading} width={50} height={50} className="" alt="loading" /> : 'Generate dish' }
+                    { isLoading ? <img src={loading}  width={50} height={50} alt="loading" /> : 'generate dish' }
                     
                 </button>
+
+                <p>isLoading status: {isLoading + ''}</p>
             </div>
             <div className="flex w-full flex-col items-center xl:flex-row">
-                {/* <p className="text-green-400 text-xl">infoFromOptions: {infoFromOptions}</p> */}
                 <Options setInfoFromOptions={setInfoFromOptions} />
                 <div>
                     <p>Generated image will be here:</p>
