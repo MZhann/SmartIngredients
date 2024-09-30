@@ -42,7 +42,7 @@ const Choose = () => {
             "ingredients are: " + gptPromptText.map((obj) => obj.name).join(", ");
 
         console.log(ingredientsString);
-        let prompt = `write me fairy tail with happy ending and educating story with well written characters`;
+        let prompt = `genereate me dish with these ingredients: ` + gptPromptText.toString();
 
         try {
             const response = await fetch(apiurl, {
@@ -63,6 +63,8 @@ const Choose = () => {
             setResponseText(text);
 
             console.log('Gtp response text: ', responseText);
+
+            await generateImage(responseText.substring(0, 100));
 
             setIsLoading(false);
         } catch (error) {
@@ -87,7 +89,7 @@ const Choose = () => {
                 size: "512x512",
             }),
         };
-
+    
         try {
             const response = await fetch(
                 "https://api.openai.com/v1/images/generations",
@@ -125,7 +127,7 @@ const Choose = () => {
                     </ul>
                 </div>
                 <button
-                    onClick={() => generateImage(createPromptText())}
+                    onClick={() => generateText()}
                     className="px-4 h-[50px] m-4 rounded-2xl bg-indigo-200"
                     disabled = {isLoading}
                 >
