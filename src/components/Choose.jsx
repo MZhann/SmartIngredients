@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Ingredient from "./Ingredient";
 import Options from "./Options";
 import loading from '../../public/loading.gif'
+import GenerationResult from "./GenerationResult";
 
 const Choose = () => {
     
@@ -15,6 +16,8 @@ const Choose = () => {
     const [imageUrl, setImageUrl] = useState('');
 
     const [isLoading, setIsLoading] = useState(false);
+
+    const [showResult, setShowResult] = useState(false);
 
     
 
@@ -42,7 +45,7 @@ const Choose = () => {
             "ingredients are: " + gptPromptText.map((obj) => obj.name).join(", ");
 
         console.log(ingredientsString);
-        let prompt = `genereate me dish with these ingredients: ` + gptPromptText.toString();
+        let prompt = `genereate me dish recipe with these ingredients: ` + gptPromptText.toString();
 
         try {
             const response = await fetch(apiurl, {
@@ -64,7 +67,7 @@ const Choose = () => {
 
             console.log('Gtp response text: ', responseText);
 
-            await generateImage(responseText.substring(0, 100));
+            // await generateImage(responseText.substring(0, 100));
 
             setIsLoading(false);
         } catch (error) {
@@ -101,9 +104,12 @@ const Choose = () => {
             
             await generateText();
             
-            
+            setIsLoading(false);
+            setShowResult(true);
             
         } catch (error) {
+            setIsLoading(false);
+            alert('sorry, generation failed')
             console.error(error);
         }
     };
@@ -127,26 +133,31 @@ const Choose = () => {
                     </ul>
                 </div>
                 <button
-                    onClick={() => generateText()}
+                    onClick={() => generateImage(createPromptText())}
                     className="px-4 h-[50px] m-4 rounded-2xl bg-indigo-200"
                     disabled = {isLoading}
                 >
-                    { isLoading ? <img src={loading}  width={50} height={50} alt="loading" /> : 'generate dish' }
+                    { isLoading ? <img src={loading} alt='loading' width={30} height={30}/> : 'generate dish' }
                     
                 </button>
 
                 <p>isLoading status: {isLoading + ''}</p>
             </div>
             <div className="flex w-full flex-col items-center xl:flex-row">
+                
+                {/* { responseText ? 'hello' : 'bye' } */}
+                {/* { responseText ? <p>generated text: {responseText}</p> : ''} */}
                 <Options setInfoFromOptions={setInfoFromOptions} />
-                <div>
+                {/* <div>
                     <p>Generated image will be here:</p>
                     <img src={imageUrl} width={200} height={200} className="bg-emerald-200 rounded-2xl border-2 border-black w-[300px] h-[300px] mr-10 mb-10" alt="generated image will be pasted here" />
                     
-                </div>
+                </div> */}
 
 
             </div>
+            <GenerationResult responseText={responseText} imageUrl={imageUrl} showResult={showResult} />
+
         </div>
     );
 };

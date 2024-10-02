@@ -5,10 +5,10 @@ import InfoBlock from "../components/InfoBlock";
 
 const MainPage = () => {
     return (
-        <div className="flex flex-col min-h-[100vh] justify-between">
+        <div className="min-h-[100vh] flex flex-col justify-between">
             <Navbar />
             <InfoBlock />
-            <div className='h-[1000px]'></div>
+            
             <Footer />
         </div>
     );
